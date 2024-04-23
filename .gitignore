@@ -1,0 +1,15 @@
+#directories
+.vs/
+bin/
+bin-int/
+sandbox/
+scripts/
+vendor/
+
+# files
+
+*.user
+premake5_test_app.lua
+*.vcxproj
+*.filters
+*.sln
