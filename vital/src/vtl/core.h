@@ -57,7 +57,7 @@ _VTL_DISABLED_WARNING_C4984
 #ifdef _VTL_DISABLE_EMIT_ERRORS
 	#define _EMIT_VTL_ERROR(NUMBER, MESSAGE)
 #else // _VTL_DISABLE_EMIT_ERRORS
-	#define _EMIT_VTL_ERROR(NUMBER, MESSAGE) _EMIT_VTL_MESSAGE("error " #NUMBER ": " MESSAGE " (define _VTL_DISABLE_EMIT_ERRORS to suppress this error)")
+	#define _EMIT_VTL_ERROR(NUMBER, MESSAGE) _EMIT_VTL_MESSAGE("error " #NUMBER ": " MESSAGE " (define _VTL_DISABLE_EMIT_ERRORS to suppress this error[not recomended])")
 #endif // _VTL_DISABLE_EMIT_ERRORS
 
 

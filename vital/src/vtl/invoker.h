@@ -122,14 +122,14 @@ namespace detail_invoker
 
 
 
-_EXPORT_STD template <class _Callable>
+template <class _Callable>
 VTL_CONSTEXPR17 auto invoke(_Callable&& _Obj) noexcept(noexcept(static_cast<_Callable&&>(_Obj)()))
 -> decltype(static_cast<_Callable&&>(_Obj)()) 
 {
     return static_cast<_Callable&&>(_Obj)();
 }
 
-_EXPORT_STD template <class _Callable, class _Ty1, class... _Types2>
+template <class _Callable, class _Ty1, class... _Types2>
 VTL_CONSTEXPR17 auto invoke(_Callable&& _Obj, _Ty1&& _Arg1, _Types2&&... _Args2) noexcept(noexcept(detail_invoker::invoker1<_Callable, _Ty1>::call(static_cast<_Callable&&>(_Obj), static_cast<_Ty1&&>(_Arg1), static_cast<_Types2&&>(_Args2)...)))
     -> decltype(detail_invoker::invoker1<_Callable, _Ty1>::call(static_cast<_Callable&&>(_Obj), static_cast<_Ty1&&>(_Arg1), static_cast<_Types2&&>(_Args2)...)) 
 {

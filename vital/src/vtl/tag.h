@@ -4,7 +4,9 @@
 
 #include "core.h"
 #include "type_traits.h"
+#if _VTL_HAS_CPP_VERSION(20)
 #include "concepts.h"
+#endif // _VTL_HAS_CPP_VERSION(20)
 
 #include <type_traits>
 
