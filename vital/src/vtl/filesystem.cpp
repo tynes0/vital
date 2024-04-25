@@ -119,7 +119,7 @@ namespace filesystem
 		return string_operations::separate_string(read_file(path), token);
 	}
 
-	std::string fetch_filename(const std::string& filepath) // this is not controlling example.some_ext.some_ext2 files in this case filename is example.some_ext
+	std::string fetch_filename(const std::string& filepath)
 	{
 		size_t last_slash = filepath.find_last_of("/\\");
 		last_slash = (last_slash == std::string::npos) ? 0 : last_slash + 1;

@@ -9,7 +9,7 @@ _VTL_START
 class log
 {
 public:
-	static dtlog::logger get_logger()
+	static dtlog::logger& get_logger()
 	{
 		static dtlog::logger s_logger("VITAL", "[%T] %N: %V%n");
 		return s_logger;
@@ -27,7 +27,7 @@ _VTL_END
 #define VTL_LOG_CRITICAL(...)	vtl::log::get_logger().critical(__VA_ARGS__)
 
 #ifdef VTL_ENABLE_ASSERTS
-#define VTL_ASSERT(cond, ...)  do { if(!(cond)) { VTL_LOG_CRITICAL("Whip Assertion Failed: File -> ({0}) Line -> ({1}) Error Message -> {2}", __FILE__, __LINE__ ,__VA_ARGS__); __debugbreak(); } } while (false)
+#define VTL_ASSERT(cond, ...)  do { if(!(cond)) { VTL_LOG_CRITICAL("Vital Assertion Failed: File -> ({0}) Line -> ({1}) Error Message -> {2}", __FILE__, __LINE__ ,__VA_ARGS__); __debugbreak(); } } while (false)
 #else // VTL_ENABLE_ASSERTS
 #define VTL_ASSERT(cond, ...) 
 #endif // VTL_ENABLE_ASSERTS
