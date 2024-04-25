@@ -161,14 +161,7 @@ _VTL_DISABLED_WARNING_C4984
 #pragma pop_macro("msvc")
 
 #ifdef VITAL_DEBUG
-	#define WHP_ENABLE_ASSERTS 1			// Whip asserts enabled
+	#define VTL_ENABLE_ASSERTS 1			// vtl asserts enabled
 #endif // VITAL_DEBUG
-
-
-// todoooo
-#define VTL_CORE_ASSERT(cond, ...) // temporary
-#define VTL_CORE_WARN(...) // temporary
-#define VTL_CORE_ERROR(...) // temporary
-
 
 #endif // !_VITAL_CORE_

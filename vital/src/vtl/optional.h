@@ -6,6 +6,7 @@
 #include <type_traits>
 
 #include "core.h"
+#include "log.h"
 #include "type_traits.h"
 #include "utility.h"
 
@@ -103,25 +104,25 @@ public:
 
 	value_type* operator->()
 	{
-		VTL_CORE_ASSERT(m_has_value, "optional has no value.");
+		VTL_ASSERT(m_has_value, "optional has no value.");
 		return &m_value;
 	}
 
 	const value_type* operator->() const
 	{
-		VTL_CORE_ASSERT(m_has_value, "optional has no value.");
+		VTL_ASSERT(m_has_value, "optional has no value.");
 		return &m_value;
 	}
 
 	value_type& operator*()
 	{
-		VTL_CORE_ASSERT(m_has_value, "optional has no value.");
+		VTL_ASSERT(m_has_value, "optional has no value.");
 		return m_value;
 	}
 
 	const value_type& operator*() const
 	{
-		VTL_CORE_ASSERT(m_has_value, "optional has no value.");
+		VTL_ASSERT(m_has_value, "optional has no value.");
 		return m_value;
 	}
 
@@ -150,7 +151,7 @@ private:
 	template <typename _Uty, enable_if_t<is_convertible_v<_Uty, _Ty>, int> = 0>
 	void initialize(const _Uty& value)
 	{
-		VTL_CORE_ASSERT(m_has_value, "optional couldn't initialize.");
+		VTL_ASSERT(m_has_value, "optional couldn't initialize.");
 		m_value = static_cast<_Ty>(value);
 		m_has_value = true;
 	}

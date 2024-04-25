@@ -8,6 +8,7 @@
 _EMIT_VTL_WARNING(VTL0002, "The contents of vtl::variant are available only with C++20 or later."); 
 #else // _VTL_HAS_CPP_VERSION(20)
 
+#include "log.h"
 #include "type_traits.h"
 #include "utility.h"
 #include "hash.h"
@@ -694,7 +695,7 @@ public:
 			}
 		}
 
-		VTL_CORE_ASSERT(!(valueless_by_exception() && o.valueless_by_exception()), "");
+		VTL_ASSERT(!(valueless_by_exception() && o.valueless_by_exception()), "");
 
 		detail_variant::visit_with_index(o, [&o, this](auto&& elem, auto index_) 
 			{
@@ -730,7 +731,7 @@ public:
 	{
 		constexpr detail_variant::union_index_t Idx = (index_of<_Ty>);
 		static_assert(Idx < size, "Requested type is not contained in the vtl::variant");
-		VTL_CORE_ASSERT(current == Idx, "Requested type is not the current type in the vtl::variant");
+		VTL_ASSERT(current == Idx, "Requested type is not the current type in the vtl::variant");
 		return storage.template get<Idx>();
 	}
 
@@ -738,7 +739,7 @@ public:
 	constexpr auto& unsafe_get() & noexcept
 	{
 		static_assert(Idx < size, "Requested type is not contained in the vtl::variant");
-		VTL_CORE_ASSERT(current == Idx, "Requested type is not the current type in the vtl::variant");
+		VTL_ASSERT(current == Idx, "Requested type is not the current type in the vtl::variant");
 		return storage.template get<Idx>();
 	}
 
@@ -746,7 +747,7 @@ public:
 	constexpr auto&& unsafe_get() && noexcept
 	{
 		static_assert(Idx < size, "Requested type is not contained in the vtl::variant");
-		VTL_CORE_ASSERT(current == Idx, "Requested type is not the current type in the vtl::variant");
+		VTL_ASSERT(current == Idx, "Requested type is not the current type in the vtl::variant");
 		return VTL_VAR_MOVE(storage.template get<Idx>());
 	}
 
@@ -754,7 +755,7 @@ public:
 	constexpr const auto& unsafe_get() const& noexcept
 	{
 		static_assert(Idx < size, "Requested type is not contained in the vtl::variant");
-		VTL_CORE_ASSERT(current == Idx, "Requested type is not the current type in the vtl::variant");
+		VTL_ASSERT(current == Idx, "Requested type is not the current type in the vtl::variant");
 		return const_cast<variant&>(*this).unsafe_get<Idx>();
 	}
 
@@ -762,7 +763,7 @@ public:
 	constexpr const auto&& unsafe_get() const&& noexcept
 	{
 		static_assert(Idx < size, "Requested type is not contained in the vtl::variant");
-		VTL_CORE_ASSERT(current == Idx, "Requested type is not the current type in the vtl::variant");
+		VTL_ASSERT(current == Idx, "Requested type is not the current type in the vtl::variant");
 		return VTL_VAR_MOVE(unsafe_get<Idx>());
 	}
 
@@ -783,7 +784,7 @@ private:
 				return;
 			}
 		}
-		VTL_CORE_ASSERT(!o.valueless_by_exception(), "vtl::variant : valueless by exception");
+		VTL_ASSERT(!o.valueless_by_exception(), "vtl::variant : valueless by exception");
 		detail_variant::visit_with_index(VTL_VAR_FORWARD(o), VTL_VAR_FORWARD(fn));
 	}
 
@@ -837,7 +838,7 @@ private:
 
 	constexpr void reset_no_check() 
 	{
-		VTL_CORE_ASSERT(index() < size, "Requested type is not the current type in the vtl::variant");
+		VTL_ASSERT(index() < size, "Requested type is not the current type in the vtl::variant");
 		if constexpr (!trivial_dtor) 
 		{
 			detail_variant::visit_with_index(*this, [](auto& elem, auto index_) 

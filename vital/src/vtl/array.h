@@ -3,6 +3,7 @@
 #define _VITAL_ARRAY_
 
 #include "core.h"
+#include "log.h"
 #include "utility.h"
 #include "iterator.h"
 
@@ -263,13 +264,13 @@ public:
 
 	VTL_CONSTEXPR20 reference operator[](size_type index) noexcept
 	{
-		VTL_CORE_ASSERT(index < _Size, "array subscript out of range");
+		VTL_ASSERT(index < _Size, "array subscript out of range");
 		return *(m_data + index);
 	}
 
 	VTL_CONSTEXPR20 const_reference operator[](size_type index) const noexcept
 	{
-		VTL_CORE_ASSERT(index < _Size, "array subscript out of range");
+		VTL_ASSERT(index < _Size, "array subscript out of range");
 		return *(m_data + index);
 	}
 
@@ -489,13 +490,13 @@ public:
 
 	VTL_CONSTEXPR17 reference operator[](size_type index)
 	{
-		VTL_CORE_ASSERT(false, "vtl::array<T, 0>::operator[]() is invalid");
+		VTL_ASSERT(false, "vtl::array<T, 0>::operator[]() is invalid");
 		return *data();
 	}
 
 	VTL_CONSTEXPR17 const_reference operator[](size_type index) const
 	{
-		VTL_CORE_ASSERT(false, "vtl::array<T, 0>::operator[]() is invalid");
+		VTL_ASSERT(false, "vtl::array<T, 0>::operator[]() is invalid");
 		return *data();
 	}
 
@@ -591,25 +592,25 @@ public:
 
 	VTL_CONSTEXPR17 reference front() noexcept
 	{
-		VTL_CORE_ASSERT(false, "vtl::array<T, 0>::front() is invalid");
+		VTL_ASSERT(false, "vtl::array<T, 0>::front() is invalid");
 		return *data();
 	}
 
 	VTL_CONSTEXPR17 const_reference front() const noexcept
 	{
-		VTL_CORE_ASSERT(false, "vtl::array<T, 0>::front() is invalid");
+		VTL_ASSERT(false, "vtl::array<T, 0>::front() is invalid");
 		return *data();
 	}
 
 	VTL_CONSTEXPR17 reference back() noexcept
 	{
-		VTL_CORE_ASSERT(false, "vtl::array<T, 0>::back() is invalid");
+		VTL_ASSERT(false, "vtl::array<T, 0>::back() is invalid");
 		return *data();
 	}
 
 	VTL_CONSTEXPR17 const_reference back() const noexcept
 	{
-		VTL_CORE_ASSERT(false, "vtl::array<T, 0>::back() is invalid");
+		VTL_ASSERT(false, "vtl::array<T, 0>::back() is invalid");
 		return *data();
 	}
 

@@ -5,6 +5,7 @@
 
 #include "core.h"
 
+#include "log.h"
 #include "type_traits.h"
 #include "utility.h"
 #include "array.h"
@@ -232,7 +233,7 @@ namespace detail_random
 
 		void init(result_type min0, result_type max0)
 		{
-			VTL_CORE_ASSERT(min0 <= max0 && (0 <= min0 || max0 <= min0 + (std::numeric_limits<result_type>::max)()), "invalid min and max arguments for whip uniform");
+			VTL_ASSERT(min0 <= max0 && (0 <= min0 || max0 <= min0 + (std::numeric_limits<result_type>::max)()), "invalid min and max arguments for whip uniform");
 
 			min = min0;
 			max = max0;

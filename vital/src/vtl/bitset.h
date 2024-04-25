@@ -4,6 +4,7 @@
 
 #include "core.h"
 
+#include "log.h"
 #include "type_traits.h"
 #include "hash.h"
 #include "iterator.h"
@@ -89,7 +90,7 @@ public:
 
     VTL_CONSTEXPR17 reference operator*() const
     {
-        VTL_CORE_ASSERT(_Bits > m_offset, "End iterator is not referenceable.");
+        VTL_ASSERT(_Bits > m_offset, "End iterator is not referenceable.");
         return reference(DREF(m_ptr), m_offset);
     }
 
@@ -210,7 +211,7 @@ public:
 
     VTL_CONSTEXPR17 reference operator*() const
     {
-        VTL_CORE_ASSERT(_Bits > m_offset, "End iterator is not reachable.");
+        VTL_ASSERT(_Bits > m_offset, "End iterator is not reachable.");
         return m_ptr->operator[](m_offset);
     }
 
@@ -327,7 +328,7 @@ public:
 #pragma warning(pop)
     static VTL_CONSTEXPR23 void validate(const size_t position) noexcept
     {
-        VTL_CORE_ASSERT(position < _Bits, "whip::bitset index outside range");
+        VTL_ASSERT(position < _Bits, "whip::bitset index outside range");
     }
     
     constexpr bool subscript(size_t position) const

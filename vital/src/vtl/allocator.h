@@ -6,6 +6,7 @@
 
 #include "core.h"
 #include "utility.h"
+#include "log.h"
 
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
@@ -33,7 +34,7 @@ public:
 	{
 		if (pointer ptr = static_cast<_Ty*>(::operator new(n * sizeof(_Ty))))
 			return ptr;
-		VTL_CORE_ASSERT(false, "Allocation failed.");
+		VTL_ASSERT(false, "Allocation failed.");
 		return nullptr;
 	}
 

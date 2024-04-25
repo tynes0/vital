@@ -3,6 +3,7 @@
 #define _VITAL_ALGORITHMS_
 
 #include "core.h"
+#include "log.h"
 #include "utility.h"
 #include "invoker.h"
 #include "math_def.h"
@@ -276,7 +277,7 @@ void shuffle(_Iter first, _Iter last, _Urng&& func)
 	for (; ++utarget != ulast; ++target_idx)
 	{
 		iter_diff_t offset = rng_func(static_cast<iter_diff_t>(target_idx + 1));
-		VTL_CORE_ASSERT(0 <= offset && offset <= target_idx, "random value out of the range");
+		VTL_ASSERT(0 <= offset && offset <= target_idx, "random value out of the range");
 		if (offset != target_idx)
 			vtl::iter_swap(utarget, ufirst + offset);
 	}

@@ -4,6 +4,7 @@
 
 #include <type_traits>
 
+#include "log.h"
 #include "core.h"
 #include "iterator.h"
 #include "type_traits.h"
@@ -102,7 +103,7 @@ public:
     constexpr void reset(_Ty start, _Ty end, step_type step = 1) noexcept
     {
 #ifdef VITAL_DEBUG
-        VTL_CORE_ASSERT(step != 0, "step cannot be equal to 0");
+        VTL_ASSERT(step != 0, "step cannot be equal to 0");
 #else 
         if (step == 0)
             step = 1;

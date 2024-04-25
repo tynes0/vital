@@ -8,6 +8,7 @@
 _EMIT_VTL_WARNING(VTL0004, "The contents of vtl::arithmetic_array are available only with C++20 or later.");
 #else //_VTL_HAS_CPP_VERSION(20)
 
+#include "log.h"
 #include "type_traits.h"
 #include "utility.h"
 #include "iterator.h"
@@ -291,13 +292,13 @@ public:
 
 	constexpr reference operator[](size_type index) noexcept
 	{
-		VTL_CORE_ASSERT(index < _Size, "arithmetic_array subscript out of range");
+		VTL_ASSERT(index < _Size, "arithmetic_array subscript out of range");
 		return *(m_data + index);
 	}
 
 	constexpr const_reference operator[](size_type index) const noexcept
 	{
-		VTL_CORE_ASSERT(index < _Size, "arithmetic_array subscript out of range");
+		VTL_ASSERT(index < _Size, "arithmetic_array subscript out of range");
 		return *(m_data + index);
 	}
 

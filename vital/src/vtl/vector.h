@@ -5,6 +5,7 @@
 #include "core.h"
 
 #include "iterator.h"
+#include "log.h"
 #include "pair.h"
 #include "utility.h"
 #include "memory_util.h"
@@ -341,37 +342,37 @@ public:
 
     VTL_CONSTEXPR20 _Ty& operator[](size_t idx)
     {
-        VTL_CORE_ASSERT(idx < m_capacities.second,"Index out of the range. (vector)");
+        VTL_ASSERT(idx < m_capacities.second,"Index out of the range. (vector)");
         return m_data[idx];
     }
 
     VTL_CONSTEXPR20 const _Ty& operator[](size_t idx) const
     {
-        VTL_CORE_ASSERT(idx < m_capacities.second, "Index out of the range. (vector)");
+        VTL_ASSERT(idx < m_capacities.second, "Index out of the range. (vector)");
         return m_data[idx];
     }
 
     VTL_CONSTEXPR20 _Ty& front()
     {
-        VTL_CORE_ASSERT(0 < m_capacities.second, "Container is empty. (vector)");
+        VTL_ASSERT(0 < m_capacities.second, "Container is empty. (vector)");
         return m_data[0];
     }
 
     VTL_CONSTEXPR20 const _Ty& front() const
     {
-        VTL_CORE_ASSERT(0 < m_capacities.second, "Container is empty. (vector)");
+        VTL_ASSERT(0 < m_capacities.second, "Container is empty. (vector)");
         return m_data[0];
     }
 
     VTL_CONSTEXPR20 _Ty& back()
     {
-        VTL_CORE_ASSERT(0 < m_capacities.second, "Container is empty. (vector)");
+        VTL_ASSERT(0 < m_capacities.second, "Container is empty. (vector)");
         return m_data[m_capacities.second - 1];
     }
 
     VTL_CONSTEXPR20 const _Ty& back() const
     {
-        VTL_CORE_ASSERT(0 < m_capacities.second, "Container is empty. (vector)");
+        VTL_ASSERT(0 < m_capacities.second, "Container is empty. (vector)");
         return m_data[m_capacities.second - 1];
     }
 
@@ -402,16 +403,16 @@ public:
 
     VTL_CONSTEXPR20 void reserve(size_t new_cap)
     {
-        VTL_CORE_ASSERT(new_cap >= m_capacities.first, "Capacity is already greater than the passed value. (vector)");
+        VTL_ASSERT(new_cap >= m_capacities.first, "Capacity is already greater than the passed value. (vector)");
         if (new_cap == m_capacities.first)
         {
-            VTL_CORE_WARN("Capacity is already equal to the passed value. (vector)");
+            VTL_LOG_WARN("Capacity is already equal to the passed value. (vector)");
             return;
         }
         if constexpr (is_trivial_v<_Ty>)
         {
             m_data = reinterpret_cast<_Ty*>(std::realloc(m_data, sizeof(_Ty) * new_cap));
-            VTL_CORE_ASSERT(m_data != nullptr, "Reallocation failed.");
+            VTL_ASSERT(m_data != nullptr, "Reallocation failed.");
         }
         else
         {
@@ -463,7 +464,7 @@ public:
         auto ulast  = end().unwrapped();
         auto upos   = position.unwrapped();
 
-        VTL_CORE_ASSERT(upos >= ufirst && upos < ulast, "Position is not within the vector.");
+        VTL_ASSERT(upos >= ufirst && upos < ulast, "Position is not within the vector.");
         if (upos + 1 < ulast)
             std::memmove(upos, upos + 1, ulast - upos - 1 * sizeof(_Ty));
         if constexpr (!is_trivial_v<_Ty>)
@@ -478,7 +479,7 @@ public:
         auto ufirst2    = start.unwrapped();
         auto ulast2     = last.unwrapped();
 
-        VTL_CORE_ASSERT(ufirst2 >= ufirst && ufirst2 < ulast  && ulast2 <= ulast, "Invalid range.");
+        VTL_ASSERT(ufirst2 >= ufirst && ufirst2 < ulast  && ulast2 <= ulast, "Invalid range.");
         size_type distance = last - start;
         if (static_cast<size_t>(ulast - ufirst2) > 0)
             std::memmove(ufirst2, ufirst2 + distance, static_cast<size_t>(m_capacities.second - distance) * sizeof(_Ty));
@@ -490,7 +491,7 @@ public:
 
     VTL_CONSTEXPR20 void erase(size_t offset)
     {
-        VTL_CORE_ASSERT(offset < m_capacities.second, "Passed value is equal or greater than the size. (vector)");
+        VTL_ASSERT(offset < m_capacities.second, "Passed value is equal or greater than the size. (vector)");
         this->erase(begin() + offset);
     }
 
@@ -505,7 +506,7 @@ public:
         auto ulast  = end().unwrapped();
         auto upos   = begin().unwrapped() + diff;
 
-        VTL_CORE_ASSERT(upos >= ufirst && upos <= ulast, "Position is not within the vector.");
+        VTL_ASSERT(upos >= ufirst && upos <= ulast, "Position is not within the vector.");
 
         std::memmove(upos + 1, upos, (ulast - upos) * sizeof(_Ty));
 
@@ -530,7 +531,7 @@ public:
         auto ulast = end().unwrapped();
         auto upos = begin().unwrapped() + diff;
 
-        VTL_CORE_ASSERT(upos >= ufirst && upos <= ulast, "Position is not within the vector.");
+        VTL_ASSERT(upos >= ufirst && upos <= ulast, "Position is not within the vector.");
 
         size_t distance = ulast - upos;
         if (distance > 0)
@@ -563,7 +564,7 @@ public:
         auto ulast  = end().unwrapped();
         auto upos = begin().unwrapped() + diff;
 
-        VTL_CORE_ASSERT(upos >= ufirst && upos <= ulast, "Position is not within the vector.");
+        VTL_ASSERT(upos >= ufirst && upos <= ulast, "Position is not within the vector.");
 
         size_t distance = ulast - upos;
         if (distance > 0)
@@ -615,7 +616,7 @@ public:
         auto ulast = end().unwrapped();
         auto upos = begin().unwrapped() + diff;
 
-        VTL_CORE_ASSERT(upos >= ufirst && upos <= ulast, "Position is not within the vector.");
+        VTL_ASSERT(upos >= ufirst && upos <= ulast, "Position is not within the vector.");
 
         size_type index = upos - ufirst;
 
@@ -643,7 +644,7 @@ public:
 
     VTL_CONSTEXPR20 void pop_back()
     {
-        VTL_CORE_ASSERT(m_capacities.second > 0, "Container is empty. (vector)");
+        VTL_ASSERT(m_capacities.second > 0, "Container is empty. (vector)");
         if constexpr (is_trivial_v<_Ty>)
             allocator<_Ty>{}.destroy(&m_data[m_capacities.second - 1]);
         m_capacities.second--;
@@ -653,7 +654,7 @@ public:
     {
         if (new_size == m_capacities.second)
         {
-            VTL_CORE_WARN("Size is already equal to the passed value. (vector)");
+            VTL_LOG_WARN("Size is already equal to the passed value. (vector)");
             return;
         }
 
@@ -708,7 +709,7 @@ public:
             m_grow_factor = grow_factor;
         else
         {
-            VTL_CORE_WARN("Maximum growth factor has been exceeded. Growth factor set equal to maximum value ({0}). (vector)", max_grow_factor);
+            VTL_LOG_WARN("Maximum growth factor has been exceeded. Growth factor set equal to maximum value ({0}). (vector)", max_grow_factor);
             m_grow_factor = max_grow_factor;
         }
     }

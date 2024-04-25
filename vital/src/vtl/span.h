@@ -8,6 +8,7 @@
 _EMIT_VTL_WARNING(VTL0003, "The contents of vtl::span are available only with C++20 or later.");
 #else //_VTL_HAS_CPP_VERSION(20)
 
+#include "log.h"
 #include "utility.h"
 #include "type_traits.h"
 #include "iterator.h"
@@ -89,7 +90,7 @@ struct span_iterator : public iterator_base<_Ty>
 
     constexpr span_iterator& operator-=(const difference_type offset) noexcept
     {
-        VTL_CORE_ASSERT(offset != std::_Min_possible_v<difference_type>, "integer overflow");
+        VTL_ASSERT(offset != std::_Min_possible_v<difference_type>, "integer overflow");
         m_ptr -= offset;
         return *this;
     }
@@ -238,7 +239,7 @@ public:
     {
         if constexpr (_Extent != dynamic_extent) 
         {
-            VTL_CORE_ASSERT(count == _Extent, "Cannot construct span with static extent from range [ptr, ptr + count) as count != extent");
+            VTL_ASSERT(count == _Extent, "Cannot construct span with static extent from range [ptr, ptr + count) as count != extent");
         }
     }
 
@@ -248,7 +249,7 @@ public:
         verify_range(first, last);
         if constexpr (_Extent != dynamic_extent)
         {
-            VTL_CORE_ASSERT(last - first == _Extent, "Cannot construct span with static extent from range [ptr, ptr + count) as count != extent");
+            VTL_ASSERT(last - first == _Extent, "Cannot construct span with static extent from range [ptr, ptr + count) as count != extent");
         }
     }
 
@@ -267,7 +268,7 @@ public:
     {
         if constexpr (_Extent != dynamic_extent) 
         {
-            VTL_CORE_ASSERT(_Range.size() == _Extent, "Cannot construct span with static extent from range r as vtl::size(r) != extent");
+            VTL_ASSERT(_Range.size() == _Extent, "Cannot construct span with static extent from range r as vtl::size(r) != extent");
         }
     }
 
@@ -277,7 +278,7 @@ public:
     {
         if constexpr (_Extent != dynamic_extent)
         {
-            VTL_CORE_ASSERT(_Range.size() == _Extent, "Cannot construct span with static extent from range r as vtl::size(r) != extent");
+            VTL_ASSERT(_Range.size() == _Extent, "Cannot construct span with static extent from range r as vtl::size(r) != extent");
         }
     }
 
@@ -287,7 +288,7 @@ public:
     {
         if constexpr (_Extent != dynamic_extent) 
         {
-            VTL_CORE_ASSERT(other.size() == _Extent, "Cannot construct span with static extent from other span as other.size() != extent");
+            VTL_ASSERT(other.size() == _Extent, "Cannot construct span with static extent from other span as other.size() != extent");
         }
     }
 
@@ -300,14 +301,14 @@ public:
         }
         else
         {
-            VTL_CORE_ASSERT(_Count <= m_size, "Count out of range in vtl::span::first()");
+            VTL_ASSERT(_Count <= m_size, "Count out of range in vtl::span::first()");
         }
         return span<element_type, _Count>{m_data, _Count};
     }
 
     VTL_NODISCARD constexpr auto first(const size_type count) const noexcept
     {
-        VTL_CORE_ASSERT(count <= m_size, "Count out of range in vtl::span::first(count)");
+        VTL_ASSERT(count <= m_size, "Count out of range in vtl::span::first(count)");
         return span<element_type, dynamic_extent>{m_data, count};
     }
 
@@ -320,14 +321,14 @@ public:
         }
         else 
         {
-            VTL_CORE_ASSERT(_Count <= m_size, "Count out of range in vtl::span::last()");
+            VTL_ASSERT(_Count <= m_size, "Count out of range in vtl::span::last()");
         }
         return span<element_type, _Count>{m_data + (m_size - _Count), _Count};
     }
 
     VTL_NODISCARD constexpr auto last(const size_type count) const noexcept
     {
-        VTL_CORE_ASSERT(count <= m_size, "Count out of range in vtl::span::last(count)");
+        VTL_ASSERT(count <= m_size, "Count out of range in vtl::span::last(count)");
         return span<element_type, dynamic_extent>{m_data + (m_size - count), count};
     }
 
@@ -341,10 +342,10 @@ public:
         }
         else 
         {
-            VTL_CORE_ASSERT(_Offset <= m_size, "Offset out of range in vtl::span::subspan()");
+            VTL_ASSERT(_Offset <= m_size, "Offset out of range in vtl::span::subspan()");
 
             if constexpr (_Count != dynamic_extent) {
-                VTL_CORE_ASSERT(_Count <= m_size - _Offset, "Count out of range in vtl::span::subspan()");
+                VTL_ASSERT(_Count <= m_size - _Offset, "Count out of range in vtl::span::subspan()");
             }
         }
         using _ReturnType = span<element_type, _Count != dynamic_extent ? _Count : (_Extent != dynamic_extent ? _Extent - _Offset : dynamic_extent)>;
@@ -353,8 +354,8 @@ public:
 
     VTL_NODISCARD constexpr auto subspan(const size_type offset, const size_type count = dynamic_extent) const noexcept
     {
-        VTL_CORE_ASSERT(offset <= m_size, "Offset out of range in vtl::span::subspan(offset, count)");
-        VTL_CORE_ASSERT(count == dynamic_extent || count <= m_size - offset, "Count out of range in vtl::span::subspan(offset, count)");
+        VTL_ASSERT(offset <= m_size, "Offset out of range in vtl::span::subspan(offset, count)");
+        VTL_ASSERT(count == dynamic_extent || count <= m_size - offset, "Count out of range in vtl::span::subspan(offset, count)");
         using _ReturnType = span<element_type, dynamic_extent>;
         return _ReturnType{ m_data + offset, count == dynamic_extent ? m_size - offset : count };
     }
@@ -368,7 +369,7 @@ public:
 #pragma warning(disable : 4127) // conditional expression is constant
     VTL_NODISCARD constexpr size_type size_bytes() const noexcept 
     {
-        VTL_CORE_ASSERT(m_size <= dynamic_extent / sizeof(element_type), "size of vtl::span in bytes exceeds std::numeric_limits<size_t>::max()");
+        VTL_ASSERT(m_size <= dynamic_extent / sizeof(element_type), "size of vtl::span in bytes exceeds std::numeric_limits<size_t>::max()");
         return m_size * sizeof(element_type);
     }
 #pragma warning(pop)
@@ -380,7 +381,7 @@ public:
 
     VTL_NODISCARD constexpr reference operator[](const size_type off) const noexcept
     {
-        VTL_CORE_ASSERT(off < m_size, "vtl::span index out of range");
+        VTL_ASSERT(off < m_size, "vtl::span index out of range");
         return m_data[off];
     }
 
@@ -388,13 +389,13 @@ public:
 #pragma warning(disable : 4127) // conditional expression is constant
     VTL_NODISCARD constexpr reference front() const noexcept 
     {
-        VTL_CORE_ASSERT(m_size > 0, "front of empty vtl::span");
+        VTL_ASSERT(m_size > 0, "front of empty vtl::span");
         return m_data[0];
     }
 
     VTL_NODISCARD constexpr reference back() const noexcept
     {
-        VTL_CORE_ASSERT(m_size > 0, "back of empty vtl::span");
+        VTL_ASSERT(m_size > 0, "back of empty vtl::span");
         return m_data[m_size - 1];
     }
 #pragma warning(pop)

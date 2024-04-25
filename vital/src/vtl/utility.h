@@ -3,6 +3,7 @@
 #define _VITAL_UTILITY_
 
 #include "core.h"
+#include "log.h"
 #include "type_traits.h"
 #include <xutility>
 
@@ -188,7 +189,7 @@ namespace detail_utility
 	template <class _Ty>
 	VTL_NODISCARD bool is_all_bits_zero(const _Ty & _Val)
 	{
-		VTL_CORE_ASSERT(std::is_scalar_v<_Ty> && !std::is_member_pointer_v<_Ty>, "value is not scalar or member pointer.");
+		VTL_ASSERT(std::is_scalar_v<_Ty> && !std::is_member_pointer_v<_Ty>, "value is not scalar or member pointer.");
 		if constexpr (is_same_v<_Ty, nullptr_t>)
 		{
 			return true;
@@ -317,7 +318,7 @@ constexpr void reset_wrapped(_Iter& it, _UIter&& _UIt)
 template <class _Iter>
 void verify_range(_Iter first, _Iter last)
 {
-	VTL_CORE_ASSERT(get_unwrapped(first) < get_unwrapped(last), "range is not verified");
+	VTL_ASSERT(get_unwrapped(first) < get_unwrapped(last), "range is not verified");
 }
 
 #define WHP_NODISCARD_EMPTY_NON_MEMBER VTL_NODISCARD_MSG("This function returns a bool indicating whether the container or container-like object is empty and has no other effects. It is not useful to call this function and discard the return value.")

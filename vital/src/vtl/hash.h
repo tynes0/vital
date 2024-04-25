@@ -3,6 +3,7 @@
 #define _VITAL_HASH_
 
 #include "core.h"
+#include "log.h"
 #include "type_traits.h"
 
 #include <type_traits>
@@ -230,7 +231,7 @@ public:
 	VTL_INLINE static constexpr size_t prime = 16777619u;
 #endif // defined(_WIN64)
 
-#define VTL_HASH_TRIVIAL_ASSERT(type) VTL_CORE_ASSERT(std::is_trivial_v<type>, "only trivial types can be directly hashed");
+#define VTL_HASH_TRIVIAL_ASSERT(type) VTL_ASSERT(std::is_trivial_v<type>, "only trivial types can be directly hashed");
 
 	VTL_NODISCARD static inline size_t append_bytes(size_t val, const unsigned char* const first, const size_t count) noexcept
 	{
