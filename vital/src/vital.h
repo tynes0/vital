@@ -26,6 +26,12 @@
 #include <vtl/utility.h>
 #include <vtl/vector.h>
 
+// -------- minimal smart pointers ----------
+#include <vtl/auto_ptr.h>
+#include <vtl/minimal_shared_ptr.h>
+#include <vtl/minimal_unique_ptr.h>
+// ------------------------------------------
+
 #if _VTL_HAS_CPP_VERSION(17)
 #include <vtl/tuple.h>
 #endif // _VTL_HAS_CPP_VERSION(17)

@@ -18,7 +18,6 @@ public:
 
 _VTL_END
 
-// todoooo
 #define VTL_LOG_TRACE(...)		vtl::log::get_logger().trace(__VA_ARGS__)
 #define VTL_LOG_INFO(...)		vtl::log::get_logger().info(__VA_ARGS__)
 #define VTL_LOG_DEBUG(...)		vtl::log::get_logger().debug(__VA_ARGS__)

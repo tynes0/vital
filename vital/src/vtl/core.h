@@ -164,4 +164,10 @@ _VTL_DISABLED_WARNING_C4984
 	#define VTL_ENABLE_ASSERTS 1			// vtl asserts enabled
 #endif // VITAL_DEBUG
 
+_VTL_START
+
+typedef decltype(nullptr) nullptr_t;
+
+_VTL_END
+
 #endif // !_VITAL_CORE_
