@@ -1,6 +1,11 @@
 #pragma once
+#ifndef _VTL_AUTO_PTR_
+#define _VTL_AUTO_PTR_
 
 #include "core.h"
+
+#pragma warning(push)
+#pragma warning(disable : _VTL_DISABLED_WARNINGS)
 
 _VTL_START
 
@@ -118,3 +123,7 @@ public:
 };
 
 _VTL_END
+
+#pragma warning(pop)
+
+#endif // !_VTL_AUTO_PTR_

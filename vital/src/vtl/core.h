@@ -160,6 +160,8 @@ _VTL_DISABLED_WARNING_C4984
 #pragma pop_macro("known_semantics")
 #pragma pop_macro("msvc")
 
+#define VTL_NODISCARD_SMART_PTR VTL_NODISCARD_MSG("This function creates and returns a new object stored in smart_ptr. Ignoring the return value renders the function useless.")
+
 #ifdef VITAL_DEBUG
 	#define VTL_ENABLE_ASSERTS 1			// vtl asserts enabled
 #endif // VITAL_DEBUG

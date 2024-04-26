@@ -216,6 +216,9 @@ template <class _Ty>
 using remove_cv_t = typename remove_cv<_Ty>::type;
 
 template <class _Ty>
+using remove_cvref_t _VTL_MSVC_KNOWN_SEMANTICS = remove_cv_t<remove_reference_t<_Ty>>;
+
+template <class _Ty>
 using const_ptr = typename remove_pointer<_Ty>::const_ptr_type;
 
 template <class _Ty>
@@ -328,6 +331,21 @@ VTL_INLINE constexpr bool is_void_v = is_same_v<remove_cv_t<_Ty>, void>;
 
 template <class _Ty>
 struct is_void : bool_constant<is_void_v<_Ty>> {};
+
+template <class>
+VTL_INLINE constexpr bool is_const_v = false;
+
+template <class _Ty>
+VTL_INLINE constexpr bool is_const_v<const _Ty> = true;
+
+template <class _Ty>
+struct is_const : bool_constant<is_const_v<_Ty>> {};
+
+template <class _Ty>
+VTL_INLINE constexpr bool is_function_v = !is_const_v<const _Ty> && !is_reference_v<_Ty>;
+
+template <class _Ty>
+struct is_function : bool_constant<is_function_v<_Ty>> {};
 
 namespace detail_type_traits
 {
@@ -524,6 +542,18 @@ template <class _Ty>
 struct is_nothrow_move_constructible : bool_constant<is_nothrow_move_constructible_v<_Ty>> {};
 
 template <class _To, class _From>
+VTL_INLINE constexpr bool is_assignable_v = __is_assignable(_To, _From);
+
+template <class _To, class _From>
+struct is_assignable : bool_constant<is_assignable_v<_To, _From>> {};
+
+template <class _Ty>
+VTL_INLINE constexpr bool is_move_assignable_v = __is_assignable(add_lvalue_reference_t<_Ty>, _Ty);
+
+template <class _Ty>
+struct is_move_assignable : bool_constant<is_move_assignable_v<_Ty>> {};
+
+template <class _To, class _From>
 VTL_INLINE constexpr bool is_nothrow_assignable_v = __is_nothrow_assignable(_To, _From);
 
 template <class _To, class _From>
@@ -546,6 +576,18 @@ VTL_INLINE constexpr bool is_nothrow_destructible_v = __is_nothrow_destructible(
 
 template <class _Ty>
 struct is_nothrow_destructible : bool_constant<is_nothrow_destructible_v<_Ty>> {};
+
+template <class _Ty>
+VTL_INLINE constexpr bool is_default_constructible_v = __is_constructible(_Ty);
+
+template <class _Ty>
+struct is_default_constructible : bool_constant<is_default_constructible_v<_Ty>> {};
+
+template <class _Ty, class... _Args>
+VTL_INLINE constexpr bool is_constructible_v = __is_constructible(_Ty, _Args...);
+
+template <class _Ty, class... _Args>
+struct is_constructible : bool_constant<__is_constructible(_Ty, _Args...)> {};
 
 template <class _Ty>
 VTL_INLINE constexpr bool is_move_constructible_v = __is_constructible(_Ty, _Ty);
@@ -592,7 +634,11 @@ struct conjunction<T, Args...> : conditional_t<T::value, conjunction<Args...>, T
 template <typename... Args>
 VTL_INLINE constexpr bool conjunction_v = conjunction<Args...>::value;
 
-// TODO: ALL WHIP!
+template <class _Trait>
+struct negation : bool_constant<!static_cast<bool>(_Trait::value)> {};
+
+template <class _Trait>
+VTL_INLINE constexpr bool negation_v = negation<_Trait>::value;
 
 template <class _Ty1, class _Ty2>
 struct is_swappable_with : std::_Is_swappable_with<_Ty1, _Ty2>::type {};
@@ -703,7 +749,100 @@ namespace detail_type_traits
 	template <class _Ty>
 	using _Make_unsigned1 = typename _Make_unsigned2<sizeof(_Ty)>::template _Apply<_Ty>;
 
+	template <class _Ty, class = void>
+	struct _Add_pointer
+	{ 
+		using type = _Ty;
+	};
+
+	template <class _Ty>
+	struct _Add_pointer<_Ty, void_t<remove_reference_t<_Ty>*>> 
+	{
+		using type = remove_reference_t<_Ty>*;
+	};
 }
+
+template <class _Ty>
+struct add_pointer 
+{
+	using type = typename detail_type_traits::_Add_pointer<_Ty>::type;
+};
+
+template <class _Ty>
+using add_pointer_t = typename detail_type_traits::_Add_pointer<_Ty>::type;
+
+template <class _Ty>
+struct decay 
+{
+	using _Ty1 = remove_reference_t<_Ty>;
+	using _Ty2 = typename detail_type_traits::_Select<std::is_function_v<_Ty1>>::template _Apply<std::add_pointer<_Ty1>, remove_cv<_Ty1>>;
+	using type = typename detail_type_traits::_Select<is_array_v<_Ty1>>::template _Apply<add_pointer<remove_extent_t<_Ty1>>, _Ty2>::type;
+};
+
+template <class _Ty>
+using decay_t = typename decay<_Ty>::type;
+
+namespace detail_type_traits
+{
+	template <class _Ty1, class _Ty2>
+	using _Conditional_type = decltype(false ? _STD declval<_Ty1>() : _STD declval<_Ty2>());
+
+#if _VTL_HAS_CPP_VERSION(20)
+	template <class _Ty1, class _Ty2, class = void>
+	struct _Const_lvalue_cond_oper {};
+
+	template <class _Ty1, class _Ty2>
+	struct _Const_lvalue_cond_oper<_Ty1, _Ty2, void_t<_Conditional_type<const _Ty1&, const _Ty2&>>> 
+	{
+		using type = remove_cvref_t<_Conditional_type<const _Ty1&, const _Ty2&>>;
+	};
+
+	template <class _Ty1, class _Ty2, class = void>
+	struct _Decayed_cond_oper : _Const_lvalue_cond_oper<_Ty1, _Ty2> {};
+#else // _VTL_HAS_CPP_VERSION(20)
+	template <class _Ty1, class _Ty2, class = void>
+	struct _Decayed_cond_oper {};
+#endif // _VTL_HAS_CPP_VERSION(20)
+
+	template <class _Ty1, class _Ty2>
+	struct _Decayed_cond_oper<_Ty1, _Ty2, void_t<_Conditional_type<_Ty1, _Ty2>>>
+	{
+		using type = decay_t<_Conditional_type<_Ty1, _Ty2>>;
+	};
+
+}
+template <class... _Ty>
+struct common_type;
+
+template <class... _Ty>
+using common_type_t = typename common_type<_Ty...>::type;
+
+template <>
+struct common_type<> {};
+
+template <class _Ty1>
+struct common_type<_Ty1> : common_type<_Ty1, _Ty1> {};
+
+namespace detail_type_traits
+{
+	template <class _Ty1, class _Ty2, class _Decayed1 = decay_t<_Ty1>, class _Decayed2 = decay_t<_Ty2>>
+	struct _Common_type2 : common_type<_Decayed1, _Decayed2> {};
+
+	template <class _Ty1, class _Ty2>
+	struct _Common_type2<_Ty1, _Ty2, _Ty1, _Ty2> : _Decayed_cond_oper<_Ty1, _Ty2> {};
+
+	template <class _Void, class _Ty1, class _Ty2, class... _Rest>
+	struct _Common_type3 {};
+
+	template <class _Ty1, class _Ty2, class... _Rest>
+	struct _Common_type3<void_t<common_type_t<_Ty1, _Ty2>>, _Ty1, _Ty2, _Rest...> : common_type<common_type_t<_Ty1, _Ty2>, _Rest...> {};
+
+}
+
+template <class _Ty1, class _Ty2>
+struct common_type<_Ty1, _Ty2> : detail_type_traits::_Common_type2<_Ty1, _Ty2> {};
+template <class _Ty1, class _Ty2, class... _Rest>
+struct common_type<_Ty1, _Ty2, _Rest...> : detail_type_traits::_Common_type3<void, _Ty1, _Ty2, _Rest...> {};
 
 template <class _Ty>
 struct make_signed 

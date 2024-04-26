@@ -374,6 +374,12 @@ struct hash<std::string>
 
 #undef VTL_HASH_TRIVIAL_ASSERT
 
+template <class _Kty, class = void>
+struct is_nothrow_hashable : false_type {};
+
+template <class _Kty>
+struct is_nothrow_hashable < _Kty, void_t<decltype(hash<_Kty>{}(_STD declval<const _Kty&>())) >> : bool_constant < noexcept(hash<_Kty>{}(_STD declval<const _Kty&>())) > {};
+
 _VTL_END
 
 #pragma warning(pop)

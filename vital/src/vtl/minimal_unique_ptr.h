@@ -1,6 +1,11 @@
 #pragma once
+#ifndef _VTL_MINIMAL_UNIQUE_OTR_
+#define _VTL_MINIMAL_UNIQUE_OTR_
 
 #include "core.h"
+
+#pragma warning(push)
+#pragma warning(disable : _VTL_DISABLED_WARNINGS)
 
 _VTL_START
 
@@ -125,9 +130,13 @@ _Ty* get(const minimal_unique_ptr<_Ty>& up)
 }
 
 template <class _Ty, class ..._Args>
-VTL_NODISCARD_MSG("vtl::minimal_unique_ptr created but not used") minimal_unique_ptr<_Ty> make_minimal_unique_ptr(_Args&&... args)
+VTL_NODISCARD_SMART_PTR minimal_unique_ptr<_Ty> make_minimal_unique_ptr(_Args&&... args)
 {
     return minimal_unique_ptr<_Ty>(new _Ty(static_cast<_Args&&>(args)...));
 }
 
 _VTL_END
+
+#pragma warning(pop)
+
+#endif // !_VTL_MINIMAL_UNIQUE_OTR_
