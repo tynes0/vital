@@ -15,8 +15,10 @@ _EMIT_VTL_WARNING(VTL0001, "The contents of vtl::tuple are available only with C
 #include "concepts.h"
 #include "pair.h"
 
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 #define VTL_TUPLE_COMPARISON_OPERATOR_1(type, member, op)                      \
     VTL_FORCE_INLINE constexpr auto operator op(type const& other)             \
@@ -962,7 +964,9 @@ struct tuple_element<I, tuple<T...>>
 
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma warning(pop)
+#endif // _VITAL_MSVC
 
 #endif //_VTL_HAS_CPP_VERSION(17)
 

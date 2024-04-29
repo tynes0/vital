@@ -6,8 +6,10 @@
 
 #include <type_traits>
 
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 _VTL_START
 
@@ -873,6 +875,8 @@ constexpr make_unsigned_t<_Rep> to_unsigned(_Rep _Val)
 
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma warning(pop)
+#endif // _VITAL_MSVC
 
 #endif // !_VITAL_TYPE_TRAITS_

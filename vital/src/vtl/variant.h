@@ -20,8 +20,11 @@ _EMIT_VTL_WARNING(VTL0002, "The contents of vtl::variant are available only with
 #include <initializer_list>
 #include <memory>
 
+
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 _VTL_START
 
@@ -1140,7 +1143,9 @@ template <class... Ts>
 
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma warning(pop)
+#endif // _VITAL_MSVC
 
 #endif // _VTL_HAS_CPP_VERSION(20)
 

@@ -7,8 +7,10 @@
 #include "core.h"
 #include "type_traits.h"
 
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 _VTL_START
 
@@ -71,10 +73,12 @@ inline constexpr auto operator|(const operator_wrapper_lhs<F, _Ty1&>& left, _Ty2
 	return left.fun(left.val, right);
 }
 
-#define vital_operator(operator_name, return_type, left_type, right_type) inline return_type __impl_of_ ## operator_name (left_type left, right_type right); VTL_INLINE constexpr auto operator_name = vtl::make_operator(__impl_of_ ## operator_name); return_type __impl_of_ ## operator_name (left_type left, right_type right)
+#define vital_operator(operator_name, return_type, left_type, right_type) inline return_type __impl_of_ ## operator_name (left_type left, right_type right); VTL_INLINE constexpr auto operator_name = vtl::make_operator(__impl_of_ ## operator_name); return_type __impl_of_  ## operator_name (left_type left, right_type right)
 
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma warning(pop)
+#endif // _VITAL_MSVC
 
 #endif // !_VITAL_EXTERNAL_OPERATOR_WRAPPER_

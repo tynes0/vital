@@ -11,10 +11,9 @@
 
 #define DREF(x) *(x)				
 
-#ifdef _WIN64
+#ifdef _WIN32
 	#define VTL_PLATFORM_WINDOWS
-#endif // _WIN64
-
+#endif // _WIN32
 
 #define _VTL_STRINGIZE_(x) #x
 #define _VTL_STRINGIZE(x) _VTL_STRINGIZE_(x)
@@ -32,15 +31,27 @@
 	#define _VTL_DISABLED_WARNING_C4984
 #endif // !_VTL_HAS_CPP_VERSION(17)
 
+#if defined(_MSC_VER)
+	#define _VITAL_MSVC
+#endif // _MSC_VER
+
+#if defined(__GNUC__)
+	#define _VITAL_GNUC
+#endif //defined(__GNUC__)
+
+
 #define _VTL_DISABLED_WARNINGS	\
 4180 4390 4514 4619 5053		\
 _VTL_DISABLED_WARNING_C4984
-
-#if defined(__CUDACC__) || defined(__INTEL_COMPILER)
-	#define _VTL_PRAGMA(PRAGMA) __pragma(PRAGMA)
-#else
-	#define _VTL_PRAGMA(PRAGMA) _Pragma(#PRAGMA)
-#endif
+#if defined(_VITAL_MSVC)
+	#if defined(__CUDACC__) || defined(__INTEL_COMPILER)
+		#define _VTL_PRAGMA(PRAGMA) __pragma(PRAGMA)
+	#else
+		#define _VTL_PRAGMA(PRAGMA) _Pragma(#PRAGMA)
+	#endif // defined(__CUDACC__) || defined(__INTEL_COMPILER)
+#else // defined(_VITAL_MSVC)
+#define _VTL_PRAGMA(PRAGMA)
+#endif // defined(_VITAL_MSVC)
 
 #define _VTL_PRAGMA_MESSAGE(MESSAGE) _VTL_PRAGMA(message(MESSAGE))
 #define _VTL_PRAGMA_WARNING(MESSAGE) _VTL_PRAGMA(warning(MESSAGE))
@@ -161,10 +172,13 @@ _VTL_DISABLED_WARNING_C4984
 #pragma pop_macro("msvc")
 
 #define VTL_NODISCARD_SMART_PTR VTL_NODISCARD_MSG("This function creates and returns a new object stored in smart_ptr. Ignoring the return value renders the function useless.")
+#define VTL_NODISCARD_EMPTY_NON_MEMBER VTL_NODISCARD_MSG("This function returns a bool indicating whether the container or container-like object is empty and has no other effects. It is not useful to call this function and discard the return value.")
 
 #ifdef VITAL_DEBUG
 	#define VTL_ENABLE_ASSERTS 1			// vtl asserts enabled
 #endif // VITAL_DEBUG
+
+#define _VTL_WIDE(x) L ## x
 
 _VTL_START
 

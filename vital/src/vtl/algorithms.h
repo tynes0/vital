@@ -11,8 +11,10 @@
 
 #include <xutility>
 
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 // todo whip::sort
 // todo whip::find
@@ -285,6 +287,8 @@ void shuffle(_Iter first, _Iter last, _Urng&& func)
 
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma warning(pop)
+#endif // _VITAL_MSVC
 
 #endif // !_VITAL_ALGORITHMS_

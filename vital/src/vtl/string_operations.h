@@ -14,8 +14,10 @@
 #include "vector.h"
 #include "operator_wrapper.h"
 
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 _VTL_START
 
@@ -104,8 +106,12 @@ namespace string_operations
 	VTL_NODISCARD vector<std::string> separate_string(const std::string& source, const std::string& token);
 	// separates the string into parts with the entered token
 	VTL_NODISCARD vector<std::string> separate_string(const std::string& source, char token);
+	// separates the string into parts with the entered token
+	VTL_NODISCARD vector<std::wstring> separate_string(const std::wstring& source, const std::wstring& token);
+	// separates the string into parts with the entered token
+	VTL_NODISCARD vector<std::wstring> separate_string(const std::wstring& source, wchar_t token);
 
-#if !defined(_vtl_is_in_defined_) && !defined(is_in)
+#if !defined(_vtl_is_in_defined_) && !defined(is_in) && !(defined _VTL_NO_IS_IN)
 
 	namespace detail_string_operations
 	{
@@ -116,6 +122,7 @@ namespace string_operations
 			return false;
 		}
 	}
+
 #define is_in <vtl::string_operations::detail_string_operations::in_op>
 #define _vtl_is_in_defined_ 1
 #endif // !defined(_vtl_is_in_defined_) && !defined(is_in)
@@ -257,6 +264,8 @@ namespace string_operations
 
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma warning(pop)
+#endif // _VITAL_MSVC
 
 #endif // !_VITAL_STRING_OPERATIONS_

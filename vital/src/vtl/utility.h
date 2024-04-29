@@ -7,8 +7,10 @@
 #include "type_traits.h"
 #include <xutility>
 
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 _VTL_START
 
@@ -321,8 +323,6 @@ void verify_range(_Iter first, _Iter last)
 	VTL_ASSERT(get_unwrapped(first) < get_unwrapped(last), "range is not verified");
 }
 
-#define WHP_NODISCARD_EMPTY_NON_MEMBER VTL_NODISCARD_MSG("This function returns a bool indicating whether the container or container-like object is empty and has no other effects. It is not useful to call this function and discard the return value.")
-
 template <class _Container>
 VTL_NODISCARD constexpr auto size(const _Container& _Cont) noexcept(noexcept(_Cont.size()))-> decltype(_Cont.size())
 {
@@ -336,19 +336,19 @@ VTL_NODISCARD constexpr size_t size(const _Ty(&)[_Size]) noexcept
 }
 
 template <class _Container>
-WHP_NODISCARD_EMPTY_NON_MEMBER constexpr auto empty(const _Container& _Cont) noexcept(noexcept(_Cont.empty()))-> decltype(_Cont.empty()) 
+VTL_NODISCARD_EMPTY_NON_MEMBER constexpr auto empty(const _Container& _Cont) noexcept(noexcept(_Cont.empty()))-> decltype(_Cont.empty()) 
 {
 	return _Cont.empty();
 }
 
 template <class _Ty, size_t _Size>
-WHP_NODISCARD_EMPTY_NON_MEMBER constexpr bool empty(const _Ty(&)[_Size]) noexcept
+VTL_NODISCARD_EMPTY_NON_MEMBER constexpr bool empty(const _Ty(&)[_Size]) noexcept
 {
 	return false;
 }
 
 template <class _Elem>
-WHP_NODISCARD_EMPTY_NON_MEMBER constexpr bool empty(std::initializer_list<_Elem> _Ilist) noexcept
+VTL_NODISCARD_EMPTY_NON_MEMBER constexpr bool empty(std::initializer_list<_Elem> _Ilist) noexcept
 {
 	return _Ilist.size() == 0;
 }
@@ -377,10 +377,10 @@ VTL_NODISCARD constexpr const _Elem* data(std::initializer_list<_Elem> _Ilist) n
 	return _Ilist.begin();
 }
 
-#undef WHP_NODISCARD_EMPTY_NON_MEMBER
-
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma	warning(pop)
+#endif // _VITAL_MSVC
 
 #endif // !_VITAL_UTILITY_

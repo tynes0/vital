@@ -4,8 +4,10 @@
 
 #include "core.h"
 
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 //todo is transparent
 
@@ -242,6 +244,8 @@ constexpr _Ty wceil(const _Ty& _val) noexcept
 
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma warning(pop)
+#endif // _VITAL_MSVC
 
 #endif // !_VITAL_MATH_DEF_

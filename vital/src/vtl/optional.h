@@ -10,8 +10,10 @@
 #include "type_traits.h"
 #include "utility.h"
 
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 _VTL_START
 
@@ -363,6 +365,8 @@ inline optional<_Ty> make_optional(const _Ty& value)
 
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma warning(pop)
+#endif // _VITAL_MSVC
 
 #endif // !_VITAL_OPTIONAL_

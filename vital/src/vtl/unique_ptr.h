@@ -16,8 +16,10 @@
 #include <compare>
 #endif // _VTL_HAS_CPP_VERSION(20)
 
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 _VTL_START
 
@@ -446,7 +448,7 @@ VTL_NODISCARD VTL_CONSTEXPR23 bool operator<=(nullptr_t left, const unique_ptr<_
     return !(right < left);
 }
 
-#ifdef _VTL_TEST_CPP_FT(concepts)
+#if _VTL_TEST_CPP_FT(concepts)
 template <class _Ty, class _Dx>
     requires std::three_way_comparable<typename unique_ptr<_Ty, _Dx>::pointer>
 VTL_NODISCARD VTL_CONSTEXPR23 std::compare_three_way_result_t<typename unique_ptr<_Ty, _Dx>::pointer> operator<=>(const unique_ptr<_Ty, _Dx>& _Left, nullptr_t) 
@@ -481,6 +483,8 @@ struct hash<unique_ptr<_Ty, _Dx>> : conditionally_enabled_hash<unique_ptr<_Ty, _
 
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma warning(pop)
+#endif // _VITAL_MSVC
 
 #endif // !_VTL_UNIQUE_PTR_

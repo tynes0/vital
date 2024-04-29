@@ -5,8 +5,10 @@
 #include "core.h"
 #include "type_traits.h"
 
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 _VTL_START
 
@@ -55,6 +57,8 @@ struct get_deleter_pointer_type<_Ty, _Dx_noref, void_t<typename _Dx_noref::point
 
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma warning(pop)
+#endif // _VITAL_MSVC
 
 #endif // !_VTL_MEMORY_

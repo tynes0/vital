@@ -9,8 +9,10 @@
 #include <type_traits>
 #include <string>
 
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 _VTL_START
 
@@ -382,6 +384,8 @@ struct is_nothrow_hashable < _Kty, void_t<decltype(hash<_Kty>{}(_STD declval<con
 
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma warning(pop)
+#endif // _VITAL_MSVC
 
 #endif // !_VITAL_HASH_

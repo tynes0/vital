@@ -11,8 +11,10 @@
 _EMIT_VTL_WARNING(VTL0005, "The contents of vital concept library are available only with C++20 concept support.");
 #else // !_VTL_TEST_CPP_FT(concepts)
 
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 _VTL_START
 
@@ -88,7 +90,9 @@ concept partial_comparable_with = equality_comparable_with<T, U> && requires(T c
 
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma warning(pop)
+#endif // _VITAL_MSVC
 
 #endif // _VTL_HAS_CPP_VERSION(20)
 

@@ -1,4 +1,4 @@
-#include "string_operations.h"
+#include "../vtl/string_operations.h"
 
 _VTL_START
 
@@ -415,7 +415,7 @@ vector<std::string> string_operations::separate_string(const std::string& source
 	std::string temp = "";
 	vector<std::string> result;
 
-	for (int i = 0; i < (int)source.size(); i++)
+	for (size_t i = 0; i < source.size(); i++)
 	{
 		if (source[i] != token)
 		{
@@ -427,7 +427,52 @@ vector<std::string> string_operations::separate_string(const std::string& source
 			temp = "";
 		}
 	}
-	result.push_back(temp);
+	if(!temp.empty())
+		result.push_back(temp);
+
+	return result;
+}
+
+vector<std::wstring> string_operations::separate_string(const std::wstring& source, const std::wstring& token)
+{
+	vector<std::wstring> result;
+	size_t pos = 0;
+	size_t last_location = 0;
+	while (true)
+	{
+		pos = source.find(token, last_location);
+		if (pos == std::string::npos)
+		{
+			pos = source.size();
+			break;
+		}
+		std::wstring temp = source.substr(last_location, pos - last_location);
+		if(!temp.empty())
+			result.push_back(temp);
+		last_location = pos + token.length();
+	}
+	return result;
+}
+
+vector<std::wstring> string_operations::separate_string(const std::wstring& source, wchar_t token)
+{
+	std::wstring temp;
+	vector<std::wstring> result;
+
+	for (size_t i = 0; i < source.size(); i++)
+	{
+		if (source[i] != token)
+		{
+			temp += source[i];
+		}
+		else
+		{
+			result.push_back(temp);
+			temp = _VTL_WIDE("");
+		}
+	}
+	if (!temp.empty())
+		result.push_back(temp);
 
 	return result;
 }

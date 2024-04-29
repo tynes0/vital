@@ -4,8 +4,10 @@
 
 #include "core.h"
 
+#ifdef _VITAL_MSVC
 #pragma warning(push)
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
+#endif // _VITAL_MSVC
 
 _VTL_START
 
@@ -200,6 +202,8 @@ VTL_NODISCARD_SMART_PTR minimal_shared_ptr<_Ty> make_minimal_shared_ptr(_Args&&.
 
 _VTL_END
 
+#ifdef _VITAL_MSVC
 #pragma warning(pop)
+#endif // _VITAL_MSVC
 
 #endif // !_VTL_MINIMAL_SHARED_PTR_
