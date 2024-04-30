@@ -16,8 +16,9 @@
 #pragma warning(disable : _VTL_DISABLED_WARNINGS)
 #endif // _VITAL_MSVC
 
-// todo whip::sort
-// todo whip::find
+// todo vtl::sort
+// todo vtl::find
+// todo vtl::copy -> win_cconv.h line 122
 
 _VTL_START
 

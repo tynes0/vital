@@ -29,9 +29,9 @@ public:
 
 enum method_type 
 {
-    skip = 0,             ///< Skip illegal/unconvertible characters
-    stop = 1,             ///< Stop conversion and throw conversion_error
-    default_method = skip ///< Default method - skip
+    skip = 0,             // illegal/unconvertible characters
+    stop = 1,             // conversion and throw conversion_error
+    default_method = skip // Default method - skip
 };
 
 template<typename _ChIn, typename _ChOut>
@@ -53,11 +53,11 @@ public:
 
 using narrow_converter = charset_converter<char, char>;
 
-template<typename CharType>
-using utf_encoder = charset_converter<char, CharType>;
+template<typename _ChTy>
+using utf_encoder = charset_converter<char, _ChTy>;
 
-template<typename CharType>
-using utf_decoder = charset_converter<CharType, char>;
+template<typename _ChTy>
+using utf_decoder = charset_converter<_ChTy, char>;
 
 enum class conv_backend { Default, IConv, ICU, WinAPI };
 
