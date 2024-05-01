@@ -61,10 +61,12 @@ using utf_decoder = charset_converter<_ChTy, char>;
 
 enum class conv_backend { Default, IConv, ICU, WinAPI };
 
-template<typename Char>
-unique_ptr<utf_encoder<Char>> make_utf_encoder(const std::string& charset, method_type how, conv_backend impl = conv_backend::Default);
-template<typename Char>
-unique_ptr<utf_decoder<Char>> make_utf_decoder(const std::string& charset, method_type how, conv_backend impl = conv_backend::Default);
+template<typename _ChTy>
+unique_ptr<utf_encoder<_ChTy>> make_utf_encoder(const std::string& charset, method_type how, conv_backend impl = conv_backend::Default);
+
+template<typename _ChTy>
+unique_ptr<utf_decoder<_ChTy>> make_utf_decoder(const std::string& charset, method_type how, conv_backend impl = conv_backend::Default);
+
 unique_ptr<narrow_converter> make_narrow_converter(const std::string& src_encoding, const std::string& target_encoding, method_type how, conv_backend impl = conv_backend::Default);
 
 _VTL_END
