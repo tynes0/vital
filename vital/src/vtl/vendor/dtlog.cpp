@@ -14,7 +14,11 @@
 
 #include "dtlog.h"
 
+#ifdef _WIN32
+
+#ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
+#endif // WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
 void dtlog::logger::set_stdout_color(log_level level)
@@ -84,3 +88,69 @@ void dtlog::logger::set_stderr_color(log_level level)
 		throw std::invalid_argument("INVALID STD HANDLE (logger::set_stderr_color())");
 	SetConsoleTextAttribute(console_handle, color_code);
 }
+#else // _WIN32
+
+
+void dtlog::logger::set_stdout_color(log_level level)
+{
+	const char* color_code = "\x1b[0m";
+
+	switch (level)
+	{
+	case log_level::none:
+	case log_level::trace:
+		break;
+	case log_level::info:
+		color_code = "\x1b[32m";
+		break;
+	case log_level::debug:
+		color_code = "\x1b[34m";
+		break;
+	case log_level::warning:
+		color_code = "\x1b[33m";
+		break;
+	case log_level::error:
+		color_code = "\x1b[31m";
+		break;
+	case log_level::critical:
+		color_code = "\x1b[91m";
+		break;
+	default:
+		break;
+	}
+
+	fwrite(color_code, sizeof(char), strlen(color_code), stdout);
+}
+
+void dtlog::logger::set_stderr_color(log_level level)
+{
+	const char* color_code = "\x1b[0m";
+
+	switch (level)
+	{
+	case log_level::none:
+	case log_level::trace:
+		break;
+	case log_level::info:
+		color_code = "\x1b[32m";
+		break;
+	case log_level::debug:
+		color_code = "\x1b[34m";
+		break;
+	case log_level::warning:
+		color_code = "\x1b[33m";
+		break;
+	case log_level::error:
+		color_code = "\x1b[31m";
+		break;
+	case log_level::critical:
+		color_code = "\x1b[91m";
+		break;
+	default:
+		break;
+	}
+
+	fwrite(color_code, sizeof(char), strlen(color_code), stderr);
+}
+
+#endif // _WIN32
