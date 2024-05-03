@@ -39,7 +39,6 @@
 	#define _VITAL_GNUC
 #endif //defined(__GNUC__)
 
-
 #define _VTL_DISABLED_WARNINGS	\
 4180 4390 4514 4619 5053		\
 _VTL_DISABLED_WARNING_C4984
@@ -117,6 +116,15 @@ _VTL_DISABLED_WARNING_C4984
 #else
 	#define VTL_FORCE_INLINE
 #endif
+
+#if defined(__GNUC__) || defined(__clang__)
+#define _VTL_FALLTHROUGH [[fallthrough]]
+#elif defined(_MSC_VER)
+#define _VTL_FALLTHROUGH __fallthrough
+#else
+#define _VTL_FALLTHROUGH
+#endif
+
 
 #if _VTL_HAS_CPP_VERSION(17)
 	#define VTL_CONSTEXPR17 constexpr

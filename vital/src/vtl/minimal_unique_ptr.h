@@ -30,12 +30,18 @@ public:
 
     constexpr minimal_unique_ptr(vtl::nullptr_t) noexcept {}
 
-    explicit minimal_unique_ptr(_Ty* ptr) noexcept : m_ptr(ptr) {}
+    minimal_unique_ptr(_Ty* ptr) noexcept : m_ptr(ptr) {}
 
     ~minimal_unique_ptr()
     {
         if (m_ptr) 
             delete m_ptr;
+    }
+
+    minimal_unique_ptr& operator=(_Ty* ptr) noexcept
+    {
+        this->reset(ptr);
+        return *this;
     }
 
     VTL_NODISCARD _Ty& operator*() const noexcept

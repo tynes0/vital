@@ -28,7 +28,7 @@ class auto_ptr
 public:
     using element_type = _Ty;
 
-    explicit auto_ptr(_Ty* _Ptr = nullptr) noexcept : m_ptr(_Ptr) {}
+    explicit auto_ptr(_Ty* ptr = nullptr) noexcept : m_ptr(ptr) {}
 
     auto_ptr(auto_ptr& right) noexcept : m_ptr(right.release()) {}
 
@@ -77,10 +77,10 @@ public:
     template <class _Other>
     operator auto_ptr_reference<_Other>() noexcept
     {
-        _Other* _Cvtptr = m_ptr;
-        auto_ptr_reference<_Other> _Ans(_Cvtptr);
+        _Other* other_ptr = m_ptr;
+        auto_ptr_reference<_Other> other_ref(other_ptr);
         m_ptr = nullptr;
-        return _Ans;
+        return other_ref;
     }
 
 
@@ -101,27 +101,20 @@ public:
 
     _Ty* release() noexcept
     {
-        _Ty* _Tmp = m_ptr;
+        _Ty* temp = m_ptr;
         m_ptr = nullptr;
-        return _Tmp;
+        return temp;
     }
 
-    void reset(_Ty* _Ptr = nullptr) noexcept 
+    void reset(_Ty* ptr = nullptr) noexcept 
     {
-        if (_Ptr != m_ptr)
+        if (ptr != m_ptr)
             delete m_ptr;
-        m_ptr = _Ptr;
+        m_ptr = ptr;
     }
 
 private:
     _Ty* m_ptr;
-};
-
-template <>
-class auto_ptr<void>
-{
-public:
-    using element_type = void;
 };
 
 _VTL_END

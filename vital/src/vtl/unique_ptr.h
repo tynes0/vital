@@ -64,9 +64,7 @@ public:
     template <class _Dx2 = _Dx, enable_if_t<is_move_constructible_v<_Dx2>, int> = 0>
     VTL_CONSTEXPR23 unique_ptr(unique_ptr&& right) noexcept : m_pair(one_then_variadic_args_t{}, vtl::forward<_Dx>(right.get_deleter()), right.release()) {}
 
-    template <class _Ty2, class _Dx2, enable_if_t<conjunction_v<negation<is_array<_Ty2>>, 
-        is_convertible<typename unique_ptr<_Ty2, _Dx2>::pointer, pointer>, 
-        conditional_t<is_reference_v<_Dx>, is_same<_Dx2, _Dx>, is_convertible<_Dx2, _Dx>>>, int> = 0>
+    template <class _Ty2, class _Dx2, enable_if_t<conjunction_v<negation<is_array<_Ty2>>,  is_convertible<typename unique_ptr<_Ty2, _Dx2>::pointer, pointer>, conditional_t<is_reference_v<_Dx>, is_same<_Dx2, _Dx>, is_convertible<_Dx2, _Dx>>>, int> = 0>
     VTL_CONSTEXPR23 unique_ptr(unique_ptr<_Ty2, _Dx2>&& right) noexcept : m_pair(one_then_variadic_args_t{}, vtl::forward<_Dx2>(right.get_deleter()), right.release()) {}
 
     template <class _Ty2,
