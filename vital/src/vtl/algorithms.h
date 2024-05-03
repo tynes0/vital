@@ -10,6 +10,7 @@
 #include "iterator.h"
 
 #include <xutility>
+#include <algorithm>
 
 #ifdef _VITAL_MSVC
 #pragma warning(push)
@@ -118,6 +119,12 @@ template <class _Iter1, class _Iter2>
 VTL_NODISCARD VTL_CONSTEXPR20 _Iter1 find_first_of(const _Iter1 first1, const _Iter1 last1, const _Iter2 first2, const _Iter2 last2)
 {
 	return vtl::find_first_of(first1, last1, first2, last2, equal_to<>{});
+}
+
+template <class _Iter>
+void sort(_Iter first, _Iter last)
+{
+	std::sort(first, last);
 }
 
 template <class _Iter, class _Pr>
