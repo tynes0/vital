@@ -110,6 +110,8 @@ namespace string_operations
 	VTL_NODISCARD vector<std::wstring> separate_string(const std::wstring& source, const std::wstring& token);
 	// separates the string into parts with the entered token
 	VTL_NODISCARD vector<std::wstring> separate_string(const std::wstring& source, wchar_t token);
+	// separates the string into parts with the entered token, but it does not perform separates in another token range entered.
+	VTL_NODISCARD vector<std::string> separate_string(const std::string& source, char token, char other_token);
 
 #if !defined(_vtl_is_in_defined_) && !defined(is_in) && !(defined _VTL_NO_IS_IN)
 

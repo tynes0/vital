@@ -477,4 +477,35 @@ vector<std::wstring> string_operations::separate_string(const std::wstring& sour
 	return result;
 }
 
+vector<std::string> string_operations::separate_string(const std::string& source, char token, char other_token)
+{
+	std::string temp = "";
+	vector<std::string> result;
+	bool in_token_range = false;
+
+	for (size_t i = 0; i < source.size(); i++)
+	{
+		if (source[i] != token)
+		{
+			temp += source[i];
+			if (source[i] == other_token)
+				in_token_range = !in_token_range;
+		}
+		else
+		{
+			if (in_token_range)
+			{
+				temp += source[i];
+				continue;
+			}
+			result.push_back(temp);
+			temp = "";
+		}
+	}
+	if (!temp.empty())
+		result.push_back(temp);
+
+	return result;
+}
+
 _VTL_END

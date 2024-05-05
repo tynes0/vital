@@ -83,7 +83,7 @@ public:
 
     VTL_CONSTEXPR17 bool operator!=(const vector_iterator& other)
     {
-        return !(this->operator==(move(other)));
+        return !(this->operator==(other));
     }
 
     VTL_CONSTEXPR17 vector_iterator operator+(size_type n) const
@@ -196,7 +196,7 @@ public:
 
     VTL_CONSTEXPR17 bool operator!=(const const_vector_iterator& other) const
     {
-        return !(this->operator==(move(other)));
+        return !(this->operator==(other));
     }
 
     VTL_CONSTEXPR17 const_vector_iterator operator+(size_type n) const
