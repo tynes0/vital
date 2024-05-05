@@ -27,3 +27,5 @@ This log starts from 1.54.4
 - Update 1.57.00 -> Made some renaming in auto_ptr.h. There are no differences in usage.
 - Update 1.57.01 -> Added minimal_smart_pointers.h file, which includes all minimal pointers.
 - Update 1.57.02 -> Added operator= overload to minimal_unique_ptr and the explicit tag was removed from the constructor.
+- Update 1.58.00 -> vector_iterator operator!= overload bug fixed.
+- Update 1.58.01 -> Added new overload of seperate_string function.
