@@ -523,7 +523,7 @@ template <class _Ty, class... _Args>
 VTL_INLINE constexpr bool is_nothrow_constructible_v = __is_nothrow_constructible(_Ty, _Args...);
 
 template <class _Ty, class... _Args>
-struct is_nothrow_constructible : bool_constant<is_nothrow_constructible_v<_Ty, _Args>> {};
+struct is_nothrow_constructible : bool_constant<__is_nothrow_constructible(_Ty, _Args...)> {};
 
 template <class _Ty>
 VTL_INLINE constexpr bool is_nothrow_copy_constructible_v = __is_nothrow_constructible(_Ty, add_lvalue_reference_t<const _Ty>);

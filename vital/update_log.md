@@ -29,4 +29,5 @@ This log starts from 1.54.4
 - Update 1.57.02 -> Added operator= overload to minimal_unique_ptr and the explicit tag was removed from the constructor.
 - Update 1.58.00 -> vector_iterator operator!= overload bug fixed.
 - Update 1.58.01 -> Added new overload of seperate_string function.
-- Update 1.58.02 -> conjuction struct re implamented.
+- Update 1.58.02 -> conjuction struct reimplamented.
+- Update 1.58.03 -> type_traits.h bugfixes.
