@@ -627,14 +627,26 @@ VTL_INLINE constexpr size_t extent_v<_Ty[], _Ix> = extent_v<_Ty, _Ix - 1>;
 template <class _Ty, unsigned int _Ix = 0>
 struct extent : integral_constant<size_t, extent_v<_Ty, _Ix>> {};
 
-template <typename... Args>
+template <bool _First_value, class _First, class... _Rest>
+struct _Conjunction 
+{
+	using type = _First;
+};
+
+template <class _True, class _Next, class... _Rest>
+struct _Conjunction<true, _True, _Next, _Rest...> 
+{
+	using type = typename _Conjunction<_Next::value, _Next, _Rest...>::type;
+};
+
+template <class... _Traits>
 struct conjunction : true_type {};
 
-template <typename T, typename... Args>
-struct conjunction<T, Args...> : conditional_t<T::value, conjunction<Args...>, T> {};
+template <class _First, class... _Rest>
+struct conjunction<_First, _Rest...> : _Conjunction<_First::value, _First, _Rest...>::type {};
 
-template <typename... Args>
-VTL_INLINE constexpr bool conjunction_v = conjunction<Args...>::value;
+template <class... _Traits>
+VTL_INLINE constexpr bool conjunction_v = conjunction<_Traits...>::value;
 
 template <class _Trait>
 struct negation : bool_constant<!static_cast<bool>(_Trait::value)> {};
