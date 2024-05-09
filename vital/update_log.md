@@ -31,3 +31,4 @@ This log starts from 1.54.4
 - Update 1.58.01 -> Added new overload of seperate_string function.
 - Update 1.58.02 -> conjuction struct reimplamented.
 - Update 1.58.03 -> type_traits.h bugfixes.
+- Update 1.58.04 -> Added range constructor to vector.

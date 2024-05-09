@@ -295,6 +295,21 @@ public:
             memory::copy_range(other.begin().unwrapped(), other.end().unwrapped(), m_data);
     }
 
+    template <class _Iter>
+    VTL_CONSTEXPR20 vector(_Iter first, _Iter last) : m_capacities({ static_cast<size_type>(last - first), static_cast<size_type>(last - first) })
+    {
+        allocator<_Ty> al;
+        m_data = al.allocate(m_capacities.first);
+#if _VTL_HAS_CPP_VERSION(17)
+        if constexpr (is_trivial_v<_Ty>)
+#else // _VTL_HAS_CPP_VERSION(17)
+        if (is_trivial_v<_Ty>)
+#endif // _VTL_HAS_CPP_VERSION(17)
+            std::memcpy(m_data, first, m_capacities.second * sizeof(_Ty));
+        else
+            memory::copy_range(get_unwrapped(first), get_unwrapped(last), m_data);
+    }
+
     VTL_CONSTEXPR20 vector(vector&& other) noexcept : m_data(other.m_data), m_capacities(other.m_capacities)
     {
         other.m_data = nullptr;
