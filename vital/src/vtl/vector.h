@@ -569,31 +569,33 @@ public:
     template <class _InputIter>
     VTL_CONSTEXPR20 void insert(iterator position, _InputIter first, _InputIter last)
     {
+        auto ufirst1 = get_unwrapped(first);
+        auto ulast1 = get_unwrapped(last);
         ptrdiff_t diff = position.unwrapped() - begin().unwrapped();
 
-        if (first == last)
+        if (ufirst1 == ulast1)
             return;
 
-        size_t count = std::distance(first, last);
+        size_t count = distance(ufirst1, ulast1);
         if (m_capacities.first == m_capacities.second)
             reserve(m_capacities.first * m_grow_factor + count);
 
-        auto ufirst = begin().unwrapped();
-        auto ulast  = end().unwrapped();
+        auto ufirst2 = begin().unwrapped();
+        auto ulast2  = end().unwrapped();
         auto upos = begin().unwrapped() + diff;
 
-        VTL_ASSERT(upos >= ufirst && upos <= ulast, "Position is not within the vector.");
+        VTL_ASSERT(upos >= ufirst2 && upos <= ulast2, "Position is not within the vector.");
 
-        size_t distance = ulast - upos;
+        size_t distance = ulast2 - upos;
         if (distance > 0)
             std::memmove(upos + count, upos, distance * sizeof(_Ty));
 
-        for (size_t i = 0; first != last; ++first, ++i)
+        for (size_t i = 0; ufirst1 != ulast1; ++ufirst1, ++i)
         {
             if constexpr (!is_trivial_v<_Ty>)
-                allocator<_Ty>{}.construct(upos + i, *first);
+                allocator<_Ty>{}.construct(upos + i, *ufirst1);
             else
-                *(upos + i) = *first;
+                *(upos + i) = *ufirst1;
         }
 
         m_capacities.second += count;
