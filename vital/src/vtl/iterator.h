@@ -27,7 +27,7 @@ struct iterator_base
 template <class _VtlIter, bool _Has_value_type = has_value_type_v<_VtlIter>>
 struct is_const_vtl_iterator
 {
-    static constexpr bool value = is_base_of_v< iterator_base<const std::remove_cv_t<typename _VtlIter::value_type>>, _VtlIter>;
+    static constexpr bool value = is_base_of_v< iterator_base<const remove_cv_t<typename _VtlIter::value_type>>, _VtlIter>;
 };
 
 template <class _VtlIter>

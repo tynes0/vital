@@ -9,6 +9,7 @@
 #include "pair.h"
 #include "utility.h"
 #include "memory_util.h"
+#include "algorithms.h"
 
 #include <cstring>
 #include <initializer_list>
@@ -573,7 +574,7 @@ public:
         if (first == last)
             return;
 
-        size_t count = distance(first, last);
+        size_t count = std::distance(first, last);
         if (m_capacities.first == m_capacities.second)
             reserve(m_capacities.first * m_grow_factor + count);
 
